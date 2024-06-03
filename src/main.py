@@ -1,12 +1,11 @@
-from fastapi import FastAPI, Request
-from pydantic import BaseModel
-
-from src.models.data_input import DataInput
+from fastapi import FastAPI
+from src.v1.routes import router
 
 
 app = FastAPI()
+app.include_router(router=router)
 
 
-@app.post('/data')
-async def save_data(data: DataInput, request: Request):
-    print(data.text, data.url)
+if __name__ == '__main__':
+    import uvicorn
+    uvicorn.run('main:app', reload=True)
