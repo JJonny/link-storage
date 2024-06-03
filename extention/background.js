@@ -8,8 +8,8 @@ function sendTextToBackend(info, tab) {
   const selectedText = info.selectionText;
   const url = tab.url;
 
-  // Отправка данных на backend Python-приложение
-  fetch('http://127.0.0.1:8000/save', {
+  // send to backend
+  fetch('http://127.0.0.1:8000/data', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
