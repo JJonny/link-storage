@@ -1,11 +1,10 @@
 from pathlib import Path
 
 from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
+
+from core.config import BASE_DIR
 from database.base_model import Model
 from database.data_input_orm import DataInputOrm
-
-
-BASE_DIR = Path(__file__).parents[1].absolute()
 
 
 engin = create_async_engine(
