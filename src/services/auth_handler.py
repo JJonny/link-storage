@@ -29,7 +29,7 @@ def create_token() -> bytes:
 
 
 async def decode_jwt(token: str) -> dict:
-    if os.getenv('DEBUG'):
+    if int(os.getenv('DEBUG')):
         token = create_token()
     try:
         decoded_token = jwt.decode(token, config.JWT_SECRET, algorithms=['HS256'])
@@ -85,24 +85,25 @@ async def get_permissions(action: str, token: str) -> bool:
     Check a role for access to a specific content.
     Raise 403 exception iif has no access.
     """
-    payload = await decode_jwt(token)
-    user_permissions = []
-    for user_perms in payload.get('perms'):
-        user_permissions.extend([PermissionRole(name=role, permissions=perm) for role, perm in user_perms.items()])
+    try:
+        payload = await decode_jwt(token)
+        user_permissions = []
+        for user_perms in payload.get('perms'):
+            user_permissions.extend([PermissionRole(name=role, permissions=perm) for role, perm in user_perms.items()])
 
-    for permission_role in user_permissions:
-        if action in ACTION.actions():
-            if permission_role.name in USER_ROLES.get_constant_values():
-                return True
-            else:
-                continue
-        if action in ACTION.actions():
-            if permission_role.name in ALLOWED_USER_ROLES_SUBSCRIBER_ACCESS:
-                return True
-            else:
-                continue
-
-    raise HTTPException(
-        status_code=status.HTTP_403_FORBIDDEN,
-        detail="Please register or buy subscription to get access to content."
-    )
+        for permission_role in user_permissions:
+            if action in ACTION.actions():
+                if permission_role.name in USER_ROLES.get_constant_values():
+                    return True
+                else:
+                    continue
+            if action in ACTION.actions():
+                if permission_role.name in ALLOWED_USER_ROLES_SUBSCRIBER_ACCESS:
+                    return True
+                else:
+                    continue
+    except:
+        raise HTTPException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            detail="Please register or buy subscription to get access to content."
+        )
