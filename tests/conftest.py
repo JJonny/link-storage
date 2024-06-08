@@ -1,17 +1,22 @@
 import asyncio
+from pathlib import Path
 from typing import AsyncGenerator
 
 import pytest
 from fastapi.testclient import TestClient
 from httpx import AsyncClient
-from sqlalchemy.pool import NullPool
-from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker, AsyncSession
+from sqlalchemy.ext.asyncio import create_async_engine, async_sessionmaker
 
-from src.database.models import Model, DataInputOrm
-from src.main import app
+from database.base_model import Model
+from database.data_input_orm import DataInputOrm
+
+from main import app
+
+
+TEST_BASE_DIR = Path(__file__).parent.absolute()
 
 engin_test = create_async_engine(
-    "sqlite+aiosqlite:///../../storage_test.db",
+    f"sqlite+aiosqlite:///{TEST_BASE_DIR}/storage_test.db",
 )
 async_session_maker = async_sessionmaker(engin_test, expire_on_commit=False)
 
