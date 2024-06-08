@@ -2,17 +2,16 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, Request
 
-from src.schemas.data_input import DataInput
-from src.database.repository import DataRepository
+from models.data_input import DataInput
+from database.repository import DataRepository
 
 
 router = APIRouter(prefix='/data')
 
 
 @router.post("")
-async def data(data: Annotated[DataInput, Depends()]):
-    print(data)
-    data_id = await DataRepository.save_data(data)
+async def data(data_: Annotated[DataInput, Depends()]):
+    data_id = await DataRepository.save_data(data_)
     return {"ok": True, "data_id": data_id}
 
 

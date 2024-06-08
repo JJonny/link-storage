@@ -2,9 +2,9 @@ from uuid import UUID
 
 from sqlalchemy import select
 
-from src.database.models import DataInputOrm
-from src.schemas.data_input import DataInput
-from src.database.db import new_session
+from database.data_input_orm import DataInputOrm
+from models.data_input import DataInput
+from database.db_manager import new_session
 
 
 class DataRepository:
