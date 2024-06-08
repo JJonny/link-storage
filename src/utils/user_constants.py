@@ -32,6 +32,10 @@ class ACTION(metaclass=ConstantContainer):
     save_data = 'save_data'
     get_all_users = 'get_all_users'
 
+    @staticmethod
+    def actions() -> tuple[str]:
+        return tuple(attr for attr in ACTION.__dict__ if not attr.startswith('__'))
+
 
 class PERMISSIONS(metaclass=ConstantContainer):
 
