@@ -1,8 +1,8 @@
 import pytest
 
 from sqlalchemy import select, insert
-from src.database.data_input_orm import DataInputOrm
-from src.models.data_input import DataInput
+from database.data_input_orm import DataInputOrm
+from models.data_input import DataInput
 
 from conftest import async_session_maker
 
